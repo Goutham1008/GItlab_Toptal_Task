@@ -1,0 +1,84 @@
+-- Create tables
+CREATE TABLE Language (
+    LanguageID INT PRIMARY KEY AUTO_INCREMENT,
+    LanguageName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Book (
+    ISBN VARCHAR(13) PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Genre VARCHAR(50) NOT NULL,
+    Description TEXT
+);
+
+CREATE TABLE BookTranslation (
+    TranslationID INT PRIMARY KEY AUTO_INCREMENT,
+    ISBN VARCHAR(13) NOT NULL,
+    LanguageID INT NOT NULL,
+    Title VARCHAR(255),
+    Description TEXT,
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN),
+    FOREIGN KEY (LanguageID) REFERENCES Language(LanguageID)
+);
+
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Review (
+    ReviewID INT PRIMARY KEY AUTO_INCREMENT,
+    ISBN VARCHAR(13) NOT NULL,
+    CustomerID INT NOT NULL,
+    ReviewText TEXT,
+    Rating INT CHECK (Rating >= 1 AND Rating <= 5),
+    ReviewDate DATE NOT NULL,
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE Recommendation (
+    ISBN VARCHAR(13) NOT NULL,
+    RecommendedISBN VARCHAR(13) NOT NULL,
+    PRIMARY KEY (ISBN, RecommendedISBN),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN),
+    FOREIGN KEY (RecommendedISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE Price (
+    PriceID INT PRIMARY KEY AUTO_INCREMENT,
+    ISBN VARCHAR(13) NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE `Order` (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    CustomerID INT NOT NULL,
+    OrderDate DATE NOT NULL,
+    TotalAmount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE OrderDetail (
+    OrderDetailID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT NOT NULL,
+    ISBN VARCHAR(13) NOT NULL,
+    Quantity INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
+);
+
+CREATE TABLE Invoice (
+    InvoiceID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT NOT NULL,
+    InvoiceDate DATE NOT NULL,
+    BillingAddress VARCHAR(255) NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID)
+);

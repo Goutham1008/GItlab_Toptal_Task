@@ -1,0 +1,76 @@
+We will be using the Entity-Relationship Model (ERM) and the below points:
+
+Entities and Attributes we will use like :
+
+In Book we will use 
+1.ISBN (Primary Key)
+2.Title
+3.Genre/Category
+4. Description
+
+In Language we will use 
+1.LanguageID (Primary Key)
+2.LanguageName
+
+In BookTranslation we will use 
+1.TranslationID (Primary Key)
+2.ISBN (Foreign Key)
+3.LanguageID (Foreign Key)
+4.Title
+5.Description
+
+In Review we will use 
+1.ReviewID (Primary Key)
+2.ISBN (Foreign Key)
+3.CustomerID (Foreign Key)
+4.ReviewText
+5.Rating
+6.ReviewDate
+
+In Recommendation we will use 
+1.ISBN (Primary Key, Foreign Key)
+2.RecommendedISBN (Primary Key, Foreign Key)
+
+In Price we will use 
+1.PriceID (Primary Key)
+2.ISBN (Foreign Key)
+3.Price
+4.StartDate
+5.EndDate
+
+In Customer we will use 
+1.CustomerID (Primary Key)
+2.FirstName
+3.LastName
+4.Email
+5.Password
+
+In Order we will use 
+1.OrderID (Primary Key)
+2.CustomerID (Foreign Key)
+3.OrderDate
+4.TotalAmount
+
+In  OrderDetail we will use 
+1.OrderDetailID (Primary Key)
+2.OrderID (Foreign Key)
+3.ISBN (Foreign Key)
+4.Quantity
+5.Price
+
+In  Invoice we will use 
+1.InvoiceID (Primary Key)
+2.OrderID (Foreign Key)
+3.InvoiceDate
+4.BillingAddress
+
+
+Relationships that we will be using in the code like :
+
+A book can have multiple translations.
+A book can have multiple reviews.
+A book can have multiple prices (for different periods).
+A book can have multiple recommendations.
+A customer can place multiple orders.
+An order can have multiple order details.
+An order generates one invoice.
